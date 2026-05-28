@@ -1,0 +1,13 @@
+services:
+  vsplit:
+    build: .
+    image: vsplit:latest
+    container_name: vsplit
+    restart: unless-stopped
+    ports:
+      - "8501:8501"
+    env_file:
+      - .env
+    volumes:
+      # Persist uploaded videos, transcripts, clips across container rebuilds
+      - ./data:/app/.vsplit_runs
