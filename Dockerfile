@@ -20,12 +20,15 @@ RUN pip install --no-cache-dir uv
 
 WORKDIR /app
 
-# Install Python deps first (better layer caching)
-COPY pyproject.toml uv.lock ./
-RUN uv sync --frozen --no-dev
+# Install third-party deps first (better layer caching).
+# --no-install-project skips building vsplit itself so the cache layer
+# stays valid as long as pyproject.toml/uv.lock don't change.
+COPY pyproject.toml uv.lock README.md ./
+RUN uv sync --frozen --no-dev --no-install-project
 
-# Then bring in the rest of the source
+# Then bring in the rest of the source and install the project itself.
 COPY . .
+RUN uv sync --frozen --no-dev
 
 # Streamlit defaults
 EXPOSE 8501
