@@ -1,0 +1,27 @@
+__pycache__/
+*.py[cod]
+.venv/
+.env
+.streamlit/secrets.toml
+dist/
+build/
+*.egg-info/
+.pytest_cache/
+
+# IDE
+.idea/
+.vscode/
+
+# Runtime artifacts (Streamlit workdir + ad-hoc dirs)
+.vsplit_runs/
+uploads/
+outputs/
+*.mp4
+*.mov
+*.mkv
+*.webm
+*.avi
+*.srt
+!tests/fixtures/*.srt
+
+.DS_Store
