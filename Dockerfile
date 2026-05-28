@@ -24,6 +24,12 @@ WORKDIR /app
 # --no-install-project skips building vsplit itself so the cache layer
 # stays valid as long as pyproject.toml/uv.lock don't change.
 COPY pyproject.toml uv.lock README.md ./
+
+# Rewrite locked package sources from pypi.org to Aliyun mirror at build
+# time. This keeps the committed lock file portable (still works abroad)
+# while drastically speeding up builds from mainland China.
+RUN sed -i 's|https://pypi.org/simple|https://mirrors.aliyun.com/pypi/simple|g; s|https://files.pythonhosted.org|https://mirrors.aliyun.com/pypi|g' uv.lock || true
+
 RUN uv sync --frozen --no-dev --no-install-project
 
 # Then bring in the rest of the source and install the project itself.
